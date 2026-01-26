@@ -93,6 +93,18 @@ py-search --download https://example.com/data.csv
 
 # 下载并指定文件名
 py-search --download https://example.com/data.csv --filename mydata.csv
+
+# 对CSV文件进行K-means聚类分析
+py-search --analysis customer_data.csv --dir examples
+
+# 指定聚类数为4
+py-search --analysis customer_data.csv --clusters 4 --dir examples
+
+# 指定使用的列
+py-search --analysis customer_data.csv --columns 消费金额 购买次数 --dir examples
+
+# 自动寻找最优聚类数
+py-search --analysis customer_data.csv --optimal --dir examples
 ```
 
 ### Python代码中使用
