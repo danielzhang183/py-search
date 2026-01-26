@@ -257,13 +257,35 @@ import matplotlib.pyplot as plt
 
 ### 中文显示问题
 
-如果图表中的中文显示为方块，需要配置matplotlib字体：
+**自动配置：** 项目已自动配置中文字体支持，无需手动设置。
+
+如果仍然遇到中文显示问题（显示为方块或警告），可以手动指定字体：
 
 ```python
 import matplotlib.pyplot as plt
-plt.rcParams['font.sans-serif'] = ['Arial Unicode MS', 'SimHei', 'DejaVu Sans']
+import matplotlib.font_manager as fm
+
+# 查看系统可用的中文字体
+fonts = [f.name for f in fm.fontManager.ttflist if 'Chinese' in f.name or 'CJK' in f.name]
+print('可用的中文字体:', fonts)
+
+# 手动配置（macOS）
+plt.rcParams['font.sans-serif'] = ['Arial Unicode MS', 'PingFang SC', 'Heiti SC']
 plt.rcParams['axes.unicode_minus'] = False
+
+# 手动配置（Windows）
+# plt.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei']
+# plt.rcParams['axes.unicode_minus'] = False
+
+# 手动配置（Linux）
+# plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei', 'Noto Sans CJK SC']
+# plt.rcParams['axes.unicode_minus'] = False
 ```
+
+**macOS字体路径：**
+- Arial Unicode MS: `/System/Library/Fonts/Supplemental/Arial Unicode.ttf`
+- PingFang SC: `/System/Library/Fonts/PingFang.ttc`
+- Heiti SC: `/System/Library/Fonts/STHeiti Medium.ttc`
 
 ## 参考资源
 

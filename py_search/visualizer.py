@@ -17,6 +17,56 @@ from typing import List, Optional, Dict, Any, Tuple
 import numpy as np
 
 
+def _configure_chinese_font():
+    """
+    配置matplotlib支持中文显示
+    
+    自动检测系统可用的中文字体并配置
+    """
+    try:
+        import matplotlib.pyplot as plt
+        import matplotlib.font_manager as fm
+        
+        # 尝试的中文字体列表（按优先级排序）
+        chinese_fonts = [
+            'Arial Unicode MS',      # macOS常见
+            'PingFang SC',           # macOS简体中文
+            'Heiti SC',              # macOS黑体简体
+            'STHeiti',               # macOS黑体
+            'Songti SC',             # macOS宋体简体
+            'SimHei',                # Windows黑体
+            'Microsoft YaHei',       # Windows微软雅黑
+            'WenQuanYi Micro Hei',   # Linux文泉驿
+            'Noto Sans CJK SC',      # Google Noto字体
+        ]
+        
+        # 获取系统所有可用字体
+        available_fonts = [f.name for f in fm.fontManager.ttflist]
+        
+        # 查找第一个可用的中文字体
+        selected_font = None
+        for font in chinese_fonts:
+            if font in available_fonts:
+                selected_font = font
+                break
+        
+        # 如果找到中文字体，配置matplotlib
+        if selected_font:
+            plt.rcParams['font.sans-serif'] = [selected_font] + plt.rcParams['font.sans-serif']
+            plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+        else:
+            # 如果没有找到，尝试使用系统默认字体
+            # macOS通常有Arial Unicode MS
+            try:
+                plt.rcParams['font.sans-serif'] = ['Arial Unicode MS', 'DejaVu Sans']
+                plt.rcParams['axes.unicode_minus'] = False
+            except:
+                pass
+        
+    except ImportError:
+        pass  # matplotlib未安装，跳过配置
+
+
 class ClusterVisualizer:
     """聚类结果可视化器"""
     
@@ -59,7 +109,9 @@ class ClusterVisualizer:
         try:
             import matplotlib.pyplot as plt
             import matplotlib
-            matplotlib.use('Agg')  # 使用非交互式后端
+            matplotlib.use('Agg')
+            _configure_chinese_font()  # 配置中文字体  # 使用非交互式后端
+            _configure_chinese_font()  # 配置中文字体
         except ImportError:
             raise ImportError("matplotlib未安装，请运行: pip install matplotlib")
         
@@ -138,6 +190,7 @@ class ClusterVisualizer:
             import matplotlib.pyplot as plt
             import matplotlib
             matplotlib.use('Agg')
+            _configure_chinese_font()  # 配置中文字体
         except ImportError:
             raise ImportError("matplotlib未安装，请运行: pip install matplotlib")
         
@@ -216,6 +269,7 @@ class ClusterVisualizer:
             import matplotlib.pyplot as plt
             import matplotlib
             matplotlib.use('Agg')
+            _configure_chinese_font()  # 配置中文字体
         except ImportError:
             raise ImportError("matplotlib未安装，请运行: pip install matplotlib")
         
@@ -269,6 +323,7 @@ class ClusterVisualizer:
             import matplotlib.pyplot as plt
             import matplotlib
             matplotlib.use('Agg')
+            _configure_chinese_font()  # 配置中文字体
         except ImportError:
             raise ImportError("matplotlib未安装，请运行: pip install matplotlib")
         
@@ -319,6 +374,7 @@ class ClusterVisualizer:
             import matplotlib.pyplot as plt
             import matplotlib
             matplotlib.use('Agg')
+            _configure_chinese_font()  # 配置中文字体
         except ImportError:
             raise ImportError("matplotlib未安装，请运行: pip install matplotlib")
         
