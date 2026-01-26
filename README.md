@@ -27,7 +27,10 @@ py-search/
 ├── examples/               # 示例数据目录（仅存放CSV数据文件）
 │   └── example.csv         # 示例CSV文件
 ├── scripts/                # 示例脚本目录
-│   └── download_example.py # 下载功能使用示例
+│   ├── download_example.py # 下载功能使用示例
+│   └── coze_integration_example.py # Coze API集成示例
+├── docs/                   # 文档目录
+│   └── COZE_INTEGRATION.md # Coze集成指南
 ├── README.md               # 项目说明文档
 ├── requirements.txt        # 项目依赖
 ├── setup.py               # 安装配置文件
@@ -203,6 +206,58 @@ pip3 install -e ".[dev]"
 ## 许可证
 
 MIT License
+
+## 扩展功能
+
+### Coze API 集成
+
+项目已内置 Coze（扣子）AI平台集成模块，可以使用AI Bot分析CSV数据。
+
+**使用方式：**
+
+```python
+from py_search import CSVReader
+from py_search.coze_integration import CozeClient, create_coze_client_from_env
+
+# 方式1: 从环境变量创建客户端（推荐）
+client = create_coze_client_from_env()
+
+# 方式2: 手动创建客户端
+client = CozeClient(access_token="your_pat_token")
+
+# 分析CSV文件
+reader = CSVReader(directory="./examples")
+info = reader.get_file_info("example.csv")
+
+# 使用Coze Bot分析
+result = client.analyze_csv_data(
+    bot_id="your_bot_id",
+    user_id="user_123",
+    csv_summary=f"行数: {info['rows']}, 列数: {info['columns']}",
+    question="这个数据集有什么特点？"
+)
+print(result)
+```
+
+**环境变量配置：**
+
+```bash
+export COZE_ACCESS_TOKEN="your_pat_token"
+export COZE_BOT_ID="your_bot_id"
+```
+
+**详细文档：**
+- 集成指南: [docs/COZE_INTEGRATION.md](docs/COZE_INTEGRATION.md)
+- 示例代码: [scripts/coze_integration_example.py](scripts/coze_integration_example.py)
+
+**安装依赖：**
+```bash
+pip3 install cozepy
+```
+
+## 故障排除
+
+如果遇到问题，请查看 [TROUBLESHOOTING.md](TROUBLESHOOTING.md) 获取详细解决方案。
 
 ## 贡献
 
