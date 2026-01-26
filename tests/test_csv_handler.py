@@ -13,7 +13,7 @@ import csv
 # 添加项目根目录到路径
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from py_search.csv_reader import CSVReader, read_csv_simple
+from py_search.csv_handler import CSVReader, read_csv_simple
 
 
 class TestCSVReader(unittest.TestCase):

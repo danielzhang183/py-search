@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-CSV文件读取模块
+CSV文件处理模块
 
-提供两种方式读取CSV文件：
-1. 使用标准库（csv模块）
-2. 使用pandas库（功能更强大）
+提供CSV文件的读取和下载功能：
+1. 读取CSV文件（使用标准库或pandas）
+2. 从HTTPS URL下载CSV文件
+3. 获取CSV文件信息
 """
 
 import os
 import glob
 import csv
 from typing import List, Optional, Dict, Any
+from urllib.request import urlopen, Request
+from urllib.error import URLError, HTTPError
+from urllib.parse import urlparse
 
 
 class CSVReader:
@@ -120,6 +124,72 @@ class CSVReader:
                 'column_names': rows[0] if rows else [],
                 'dtypes': None
             }
+    
+    def download_csv(self, url: str, filename: Optional[str] = None) -> str:
+        """
+        从HTTPS URL下载CSV文件并保存到指定目录
+        
+        Args:
+            url: CSV文件的HTTPS URL
+            filename: 保存的文件名，如果为None则从URL中提取
+            
+        Returns:
+            保存的文件路径
+            
+        Raises:
+            URLError: URL错误
+            HTTPError: HTTP错误
+            ValueError: URL格式错误
+        """
+        # 验证URL
+        parsed_url = urlparse(url)
+        if not parsed_url.scheme or parsed_url.scheme not in ['http', 'https']:
+            raise ValueError(f"不支持的URL协议: {parsed_url.scheme}，仅支持 http 和 https")
+        
+        # 确定文件名
+        if filename is None:
+            # 从URL中提取文件名
+            filename = os.path.basename(parsed_url.path)
+            if not filename or not filename.endswith('.csv'):
+                # 如果URL中没有文件名或不是CSV，使用默认名称
+                filename = f"downloaded_{os.path.basename(parsed_url.netloc)}.csv"
+        
+        # 确保文件名以.csv结尾
+        if not filename.endswith('.csv'):
+            filename += '.csv'
+        
+        # 构建保存路径
+        save_path = os.path.join(self.directory, filename)
+        
+        # 确保目录存在
+        os.makedirs(self.directory, exist_ok=True)
+        
+        try:
+            # 创建请求，添加User-Agent避免某些服务器拒绝请求
+            req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            
+            # 下载文件
+            print(f"正在从 {url} 下载CSV文件...")
+            with urlopen(req, timeout=30) as response:
+                # 读取内容
+                content = response.read()
+                
+                # 保存到文件
+                with open(save_path, 'wb') as f:
+                    f.write(content)
+                
+                file_size = len(content)
+                print(f"下载完成！文件已保存到: {save_path}")
+                print(f"文件大小: {file_size:,} 字节 ({file_size / 1024:.2f} KB)")
+                
+                return save_path
+                
+        except HTTPError as e:
+            raise HTTPError(e.url, e.code, f"HTTP错误 {e.code}: {e.reason}", e.headers, None)
+        except URLError as e:
+            raise URLError(f"URL错误: {e.reason}")
+        except Exception as e:
+            raise Exception(f"下载文件时出错: {str(e)}")
 
 
 def read_csv_files(directory: Optional[str] = None, use_pandas: bool = True) -> None:
@@ -184,3 +254,25 @@ def read_csv_simple(csv_filename: str, directory: Optional[str] = None) -> None:
             print("...")
     except Exception as e:
         print(f"读取文件时出错: {e}")
+
+
+def download_csv_from_url(url: str, save_directory: Optional[str] = None, filename: Optional[str] = None) -> str:
+    """
+    从HTTPS URL下载CSV文件并保存到指定目录
+    
+    Args:
+        url: CSV文件的HTTPS URL
+        save_directory: 保存目录，如果为None则使用当前目录下的examples文件夹
+        filename: 保存的文件名，如果为None则从URL中提取
+        
+    Returns:
+        保存的文件路径
+    """
+    # 默认保存到examples目录
+    if save_directory is None:
+        # 获取项目根目录（假设examples在项目根目录下）
+        current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        save_directory = os.path.join(current_dir, "examples")
+    
+    reader = CSVReader(directory=save_directory)
+    return reader.download_csv(url, filename)

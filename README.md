@@ -7,8 +7,9 @@
 - 🔍 自动扫描指定文件夹下的所有CSV文件
 - 📊 支持两种读取方式：标准库版本和pandas版本
 - 📝 显示CSV文件的基本信息（行数、列数、列名等）
+- 🌐 支持从HTTPS URL下载CSV文件
+- 💾 自动保存下载的文件到examples文件夹
 - 🛡️ 包含完善的错误处理机制
-- 🌐 支持UTF-8编码
 - 📦 标准化的Python项目结构
 - 🧪 包含单元测试
 
@@ -76,6 +77,12 @@ py-search --file example.csv
 
 # 读取指定目录下的CSV文件
 py-search --dir /path/to/directory
+
+# 从HTTPS URL下载CSV文件到examples文件夹
+py-search --download https://example.com/data.csv
+
+# 下载并指定文件名
+py-search --download https://example.com/data.csv --filename mydata.csv
 ```
 
 ### Python代码中使用
@@ -109,13 +116,37 @@ print(f"行数: {info['rows']}, 列数: {info['columns']}")
 #### 方式2：使用函数
 
 ```python
-from py_search import read_csv_files, read_csv_simple
+from py_search import read_csv_files, read_csv_simple, download_csv_from_url
 
 # 读取目录下所有CSV文件
 read_csv_files(directory="./examples", use_pandas=True)
 
 # 读取指定文件（使用标准库）
 read_csv_simple("example.csv", directory="./examples")
+
+# 从URL下载CSV文件到examples文件夹
+save_path = download_csv_from_url("https://example.com/data.csv")
+print(f"文件已保存到: {save_path}")
+
+# 下载并指定文件名和目录
+save_path = download_csv_from_url(
+    "https://example.com/data.csv",
+    save_directory="./examples",
+    filename="mydata.csv"
+)
+```
+
+#### 方式3：使用类的下载方法
+
+```python
+from py_search import CSVReader
+
+# 创建读取器实例，指定保存目录
+reader = CSVReader(directory="./examples")
+
+# 下载CSV文件
+save_path = reader.download_csv("https://example.com/data.csv", filename="data.csv")
+print(f"文件已保存到: {save_path}")
 ```
 
 ## 开发
@@ -163,6 +194,9 @@ pip3 install -e ".[dev]"
 - 如果文件夹下没有CSV文件，脚本会提示相应信息
 - 如果CSV文件读取失败，会显示错误信息但不会中断程序
 - 使用pandas功能需要先安装pandas：`pip install pandas`
+- 下载功能使用Python标准库，无需额外依赖
+- 下载的文件默认保存到 `examples/` 文件夹
+- 如果URL中没有文件名，会自动生成一个基于域名的文件名
 
 ## 许可证
 
