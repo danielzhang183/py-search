@@ -17,7 +17,7 @@
 
 ## 项目结构
 
-```
+```scss
 py-search/
 ├── py_search/              # 主包目录
 │   ├── __init__.py         # 包初始化文件
@@ -48,11 +48,13 @@ py-search/
 
 1. 克隆或下载项目到本地
 2. 安装项目：
+
 ```bash
 pip install -e .
 ```
 
 或者安装到系统：
+
 ```bash
 pip install .
 ```
@@ -60,11 +62,13 @@ pip install .
 ### 方法2：直接使用（开发模式）
 
 1. 安装依赖：
+
 ```bash
 pip install -r requirements.txt
 ```
 
-2. 使用Python模块方式运行：
+1. 使用Python模块方式运行：
+
 ```bash
 python3 -m py_search.cli
 ```
@@ -282,11 +286,13 @@ print(df[['客户ID', 'cluster']])
 ```
 
 **安装依赖：**
+
 ```bash
 pip install pandas scikit-learn numpy
 ```
 
 **示例代码：**
+
 - 查看 [scripts/kmeans_analysis_example.py](scripts/kmeans_analysis_example.py) 获取完整示例
 
 ### Coze API 集成
@@ -327,10 +333,12 @@ export COZE_BOT_ID="your_bot_id"
 ```
 
 **详细文档：**
+
 - 集成指南: [docs/COZE_INTEGRATION.md](docs/COZE_INTEGRATION.md)
 - 示例代码: [scripts/coze_integration_example.py](scripts/coze_integration_example.py)
 
 **安装依赖：**
+
 ```bash
 pip3 install cozepy
 ```
@@ -346,6 +354,7 @@ pip3 install cozepy
 ## 更新日志
 
 ### v0.1.0
+
 - 初始版本
 - 支持标准库和pandas两种读取方式
 - 提供命令行接口
