@@ -9,6 +9,8 @@
 - 📝 显示CSV文件的基本信息（行数、列数、列名等）
 - 🌐 支持从HTTPS URL下载CSV文件
 - 💾 自动保存下载的文件到examples文件夹
+- 🤖 集成Coze AI平台，支持AI分析
+- 📈 **K-means聚类分析**（参考[阿里云文章](https://developer.aliyun.com/article/1541894)）
 - 🛡️ 包含完善的错误处理机制
 - 📦 标准化的Python项目结构
 - 🧪 包含单元测试
@@ -20,6 +22,8 @@ py-search/
 ├── py_search/              # 主包目录
 │   ├── __init__.py         # 包初始化文件
 │   ├── csv_handler.py      # CSV处理核心模块（读取、下载）
+│   ├── data_analyzer.py    # 数据分析模块（K-means聚类）
+│   ├── coze_integration.py # Coze AI集成模块
 │   └── cli.py              # 命令行接口
 ├── tests/                  # 测试目录
 │   ├── __init__.py
@@ -28,7 +32,8 @@ py-search/
 │   └── example.csv         # 示例CSV文件
 ├── scripts/                # 示例脚本目录
 │   ├── download_example.py # 下载功能使用示例
-│   └── coze_integration_example.py # Coze API集成示例
+│   ├── coze_integration_example.py # Coze API集成示例
+│   └── kmeans_analysis_example.py # K-means聚类分析示例
 ├── docs/                   # 文档目录
 │   └── COZE_INTEGRATION.md # Coze集成指南
 ├── README.md               # 项目说明文档
@@ -189,7 +194,12 @@ pip3 install -e ".[dev]"
 ## 系统要求
 
 - Python 3.6+（在 macOS 上使用 `python3` 命令）
-- （可选）pandas >= 2.0.0（用于完整功能）
+- **必需依赖：**
+  - pandas >= 2.0.0（用于CSV读取和数据分析）
+  - scikit-learn >= 1.0.0（用于K-means聚类）
+  - numpy >= 1.20.0（用于数值计算）
+- **可选依赖：**
+  - cozepy（用于Coze AI集成）
 
 **注意**：在 macOS 和大多数 Linux 系统上，Python 3 的命令是 `python3` 而不是 `python`。如果遇到 `command not found: python` 错误，请使用 `python3` 替代。
 
@@ -208,6 +218,64 @@ pip3 install -e ".[dev]"
 MIT License
 
 ## 扩展功能
+
+### K-means聚类分析
+
+项目支持对CSV数据进行K-means聚类分析，参考[阿里云开发者社区文章](https://developer.aliyun.com/article/1541894)。
+
+**快速开始：**
+
+```python
+from py_search import CSVReader
+from py_search.data_analyzer import DataAnalyzer, kmeans_analyze_csv
+
+# 方式1: 使用便捷函数
+result = kmeans_analyze_csv(
+    csv_file="example.csv",
+    n_clusters=3,  # 分为3个聚类
+    directory="./examples"
+)
+
+# 查看结果
+print(f"聚类数: {result['n_clusters']}")
+print(f"各聚类样本数: {result['cluster_info']}")
+
+# 方式2: 使用类方法
+reader = CSVReader(directory="./examples")
+df = reader.read_with_pandas("example.csv")
+
+analyzer = DataAnalyzer()
+data, columns = analyzer.preprocess_data(df)
+result = analyzer.kmeans_cluster(data, n_clusters=3)
+
+# 寻找最优聚类数
+optimal = analyzer.find_optimal_clusters(data, max_clusters=10)
+print(f"最优聚类数: {optimal['optimal_k']}")
+```
+
+**客户细分示例：**
+
+```python
+# 对客户数据进行细分
+result = kmeans_analyze_csv(
+    csv_file="customer_data.csv",
+    n_clusters=4,  # 将客户分为4类
+    numeric_columns=["消费金额", "购买次数", "最近购买天数"],
+    directory="./examples"
+)
+
+# 查看每个客户所属的聚类
+df = result['dataframe']
+print(df[['客户ID', 'cluster']])
+```
+
+**安装依赖：**
+```bash
+pip install pandas scikit-learn numpy
+```
+
+**示例代码：**
+- 查看 [scripts/kmeans_analysis_example.py](scripts/kmeans_analysis_example.py) 获取完整示例
 
 ### Coze API 集成
 

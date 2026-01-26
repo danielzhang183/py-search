@@ -12,19 +12,27 @@ from .csv_handler import CSVReader, read_csv_files, read_csv_simple, download_cs
 # 可选导入Coze集成模块
 try:
     from .coze_integration import CozeClient, create_coze_client_from_env
-    __all__ = [
-        "CSVReader", 
-        "read_csv_files", 
-        "read_csv_simple", 
-        "download_csv_from_url",
-        "CozeClient",
-        "create_coze_client_from_env"
-    ]
+    _has_coze = True
 except ImportError:
-    # 如果cozepy未安装，不导出Coze相关类
-    __all__ = [
-        "CSVReader", 
-        "read_csv_files", 
-        "read_csv_simple", 
-        "download_csv_from_url"
-    ]
+    _has_coze = False
+
+# 可选导入数据分析模块
+try:
+    from .data_analyzer import DataAnalyzer, kmeans_analyze_csv
+    _has_analyzer = True
+except ImportError:
+    _has_analyzer = False
+
+# 构建导出列表
+__all__ = [
+    "CSVReader", 
+    "read_csv_files", 
+    "read_csv_simple", 
+    "download_csv_from_url"
+]
+
+if _has_coze:
+    __all__.extend(["CozeClient", "create_coze_client_from_env"])
+
+if _has_analyzer:
+    __all__.extend(["DataAnalyzer", "kmeans_analyze_csv"])
