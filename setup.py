@@ -23,12 +23,12 @@ def read_requirements():
 setup(
     name="py-search",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="Daniel Zhang",
+    author_email="danielzhang182@gmail.com",
     description="一个简单易用的Python工具，用于读取和处理CSV文件",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/py-search",
+    url="https://github.com/danielzhang182/py-search",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
