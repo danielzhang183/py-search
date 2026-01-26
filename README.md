@@ -19,13 +19,15 @@
 py-search/
 ├── py_search/              # 主包目录
 │   ├── __init__.py         # 包初始化文件
-│   ├── csv_reader.py       # CSV读取核心模块
+│   ├── csv_handler.py      # CSV处理核心模块（读取、下载）
 │   └── cli.py              # 命令行接口
 ├── tests/                  # 测试目录
 │   ├── __init__.py
-│   └── test_csv_reader.py  # 单元测试
-├── examples/               # 示例数据
+│   └── test_csv_handler.py # 单元测试
+├── examples/               # 示例数据目录（仅存放CSV数据文件）
 │   └── example.csv         # 示例CSV文件
+├── scripts/                # 示例脚本目录
+│   └── download_example.py # 下载功能使用示例
 ├── README.md               # 项目说明文档
 ├── requirements.txt        # 项目依赖
 ├── setup.py               # 安装配置文件
@@ -160,7 +162,7 @@ print(f"文件已保存到: {save_path}")
 python3 -m unittest discover tests
 
 # 或者直接运行测试文件
-python3 -m unittest tests.test_csv_reader
+python3 -m unittest tests.test_csv_handler
 
 # 或者使用 pytest（需要先安装：pip install pytest）
 python3 -m pytest tests/
