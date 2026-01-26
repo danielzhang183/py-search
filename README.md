@@ -11,6 +11,7 @@
 - 💾 自动保存下载的文件到examples文件夹
 - 🤖 集成Coze AI平台，支持AI分析
 - 📈 **K-means聚类分析**（参考[阿里云文章](https://developer.aliyun.com/article/1541894)）
+- 📊 **可视化展示**：自动生成2D/3D散点图、分布图、肘部法则图等
 - 🛡️ 包含完善的错误处理机制
 - 📦 标准化的Python项目结构
 - 🧪 包含单元测试
@@ -118,6 +119,8 @@ py-search --analysis customer_data.csv --optimal --dir examples
 # - *_clustered_*.csv: 包含聚类标签的完整数据
 # - *_report_*.json: 分析报告（JSON格式）
 # - *_report_*.txt: 分析报告（文本格式）
+# - *_2d_*.png, *_3d_*.png: 可视化图表（如果安装了matplotlib）
+# - --no-viz: 不生成可视化图表
 ```
 
 ### Python代码中使用
@@ -223,6 +226,7 @@ pip3 install -e ".[dev]"
   - pandas >= 2.0.0（用于CSV读取和数据分析）
   - scikit-learn >= 1.0.0（用于K-means聚类）
   - numpy >= 1.20.0（用于数值计算）
+  - matplotlib >= 3.5.0（用于可视化，可选但推荐）
 - **可选依赖：**
   - cozepy（用于Coze AI集成）
 

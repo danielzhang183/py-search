@@ -29,6 +29,7 @@ def main():
   %(prog)s --analysis data.csv --clusters 4  # 指定聚类数为4
   %(prog)s --analysis data.csv --columns 消费金额 购买次数  # 指定使用的列
   %(prog)s --analysis data.csv --optimal  # 自动寻找最优聚类数
+  %(prog)s --analysis data.csv --no-viz  # 不生成可视化图表
         """
     )
     
@@ -90,12 +91,18 @@ def main():
         help='自动寻找最优聚类数（与--analysis一起使用）'
     )
     
+    parser.add_argument(
+        '--no-viz',
+        action='store_true',
+        help='不生成可视化图表（与--analysis一起使用）'
+    )
+    
     args = parser.parse_args()
     
     try:
         if args.analysis:
             # K-means聚类分析
-            _run_analysis(args.analysis, args.clusters, args.columns, args.dir, args.optimal)
+            _run_analysis(args.analysis, args.clusters, args.columns, args.dir, args.optimal, args.no_viz)
         elif args.download:
             # 下载CSV文件
             save_path = download_csv_from_url(args.download, filename=args.filename)
@@ -124,7 +131,7 @@ def main():
         sys.exit(1)
 
 
-def _run_analysis(csv_file: str, n_clusters: int, columns: list, directory: str, find_optimal: bool):
+def _run_analysis(csv_file: str, n_clusters: int, columns: list, directory: str, find_optimal: bool, no_viz: bool = False):
     """
     执行K-means聚类分析并输出结果
     
@@ -163,6 +170,34 @@ def _run_analysis(csv_file: str, n_clusters: int, columns: list, directory: str,
             for k, score in zip(optimal_result['k_range'], optimal_result['silhouette_scores']):
                 marker = " ← 最优" if k == n_clusters else ""
                 print(f"  k={k}: {score:.4f}{marker}")
+            
+            # 生成最优聚类数分析图表
+            try:
+                from .visualizer import ClusterVisualizer
+                visualizer = ClusterVisualizer()
+                
+                # 肘部法则图
+                elbow_path = visualizer.plot_elbow_method(
+                    optimal_result['k_range'],
+                    optimal_result['inertias'],
+                    optimal_k=n_clusters,
+                    title=f"肘部法则 - {os.path.basename(csv_file)}"
+                )
+                
+                # 轮廓系数图
+                silhouette_path = visualizer.plot_silhouette_scores(
+                    optimal_result['k_range'],
+                    optimal_result['silhouette_scores'],
+                    optimal_k=n_clusters,
+                    title=f"轮廓系数分析 - {os.path.basename(csv_file)}"
+                )
+                
+                print(f"\n✓ 肘部法则图已保存: {elbow_path}")
+                print(f"✓ 轮廓系数图已保存: {silhouette_path}")
+            except ImportError:
+                pass  # matplotlib未安装，跳过可视化
+            except Exception as e:
+                print(f"⚠ 生成分析图表时出错: {e}", file=sys.stderr)
         
         # 执行聚类分析
         print(f"\n正在执行K-means聚类（k={n_clusters}）...")
@@ -216,6 +251,20 @@ def _run_analysis(csv_file: str, n_clusters: int, columns: list, directory: str,
             print(f"✓ 文本报告已保存: {saved_files['txt']}")
         except Exception as e:
             print(f"\n⚠ 保存结果时出错: {e}", file=sys.stderr)
+        
+        # 生成可视化图表
+        if not no_viz:
+            try:
+                from .visualizer import visualize_cluster_result
+                saved_images = visualize_cluster_result(result, csv_file)
+                if saved_images:
+                    print(f"\n✓ 可视化图表已生成:")
+                    for chart_type, path in saved_images.items():
+                        print(f"  - {chart_type.upper()}: {path}")
+            except ImportError:
+                print(f"\n提示: 安装matplotlib可生成可视化图表: pip install matplotlib")
+            except Exception as e:
+                print(f"\n⚠ 生成可视化图表时出错: {e}", file=sys.stderr)
         
         print("\n✓ 分析完成！")
         

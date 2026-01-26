@@ -36,3 +36,12 @@ if _has_coze:
 
 if _has_analyzer:
     __all__.extend(["DataAnalyzer", "kmeans_analyze_csv", "save_analysis_results"])
+
+# 可选导入可视化模块
+try:
+    from .visualizer import ClusterVisualizer, visualize_cluster_result
+    _has_visualizer = True
+    if _has_analyzer:
+        __all__.extend(["ClusterVisualizer", "visualize_cluster_result"])
+except ImportError:
+    _has_visualizer = False
