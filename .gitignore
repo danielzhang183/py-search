@@ -133,3 +133,7 @@ dmypy.json
 # Project specific
 *.csv
 !examples/*.csv
+
+# Reports folder (keep structure but ignore generated files)
+reports/*
+!reports/.gitkeep

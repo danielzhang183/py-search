@@ -35,4 +35,4 @@ if _has_coze:
     __all__.extend(["CozeClient", "create_coze_client_from_env"])
 
 if _has_analyzer:
-    __all__.extend(["DataAnalyzer", "kmeans_analyze_csv"])
+    __all__.extend(["DataAnalyzer", "kmeans_analyze_csv", "save_analysis_results"])

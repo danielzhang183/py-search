@@ -10,7 +10,9 @@
 """
 
 import os
+import json
 from typing import List, Optional, Dict, Any, Tuple
+from datetime import datetime
 import numpy as np
 
 
@@ -234,3 +236,105 @@ def kmeans_analyze_csv(csv_file: str,
         numeric_columns=numeric_columns,
         directory=directory
     )
+
+
+def save_analysis_results(result: Dict[str, Any], 
+                          original_file: str, 
+                          n_clusters: int,
+                          reports_dir: Optional[str] = None) -> Dict[str, str]:
+    """
+    保存分析结果到reports文件夹
+    
+    Args:
+        result: 分析结果字典
+        original_file: 原始CSV文件名
+        n_clusters: 聚类数量
+        reports_dir: 报告保存目录，如果为None则使用项目根目录下的reports文件夹
+        
+    Returns:
+        包含保存文件路径的字典
+    """
+    try:
+        # 确定reports目录
+        if reports_dir is None:
+            # 获取项目根目录（假设reports在项目根目录下）
+            current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            reports_dir = os.path.join(current_dir, "reports")
+        
+        # 创建reports文件夹
+        os.makedirs(reports_dir, exist_ok=True)
+        
+        # 生成时间戳
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # 生成文件名（去除扩展名）
+        base_name = os.path.splitext(os.path.basename(original_file))[0]
+        
+        saved_files = {}
+        
+        # 保存带聚类标签的CSV文件
+        df_with_cluster = result['dataframe']
+        csv_output_file = os.path.join(reports_dir, f"{base_name}_clustered_{timestamp}.csv")
+        df_with_cluster.to_csv(csv_output_file, index=False, encoding='utf-8-sig')
+        saved_files['csv'] = csv_output_file
+        
+        # 保存分析报告（JSON格式）
+        report = {
+            'analysis_time': datetime.now().isoformat(),
+            'source_file': original_file,
+            'n_clusters': n_clusters,
+            'total_samples': result['total_samples'],
+            'used_columns': result['used_columns'],
+            'cluster_info': {
+                str(k): {
+                    'count': v['count'],
+                    'mean': {str(k2): float(v2) for k2, v2 in v['mean'].items()} if v['mean'] else {}
+                }
+                for k, v in result['cluster_info'].items()
+            },
+            'quality_metrics': {
+                'silhouette_score': float(result['cluster_result']['silhouette_score']) if result['cluster_result']['silhouette_score'] else None,
+                'inertia': float(result['cluster_result']['inertia'])
+            }
+        }
+        
+        json_output_file = os.path.join(reports_dir, f"{base_name}_report_{timestamp}.json")
+        with open(json_output_file, 'w', encoding='utf-8') as f:
+            json.dump(report, f, ensure_ascii=False, indent=2)
+        saved_files['json'] = json_output_file
+        
+        # 保存文本格式的报告（更易读）
+        txt_output_file = os.path.join(reports_dir, f"{base_name}_report_{timestamp}.txt")
+        with open(txt_output_file, 'w', encoding='utf-8') as f:
+            f.write("=" * 60 + "\n")
+            f.write("K-means聚类分析报告\n")
+            f.write("=" * 60 + "\n\n")
+            f.write(f"分析时间: {report['analysis_time']}\n")
+            f.write(f"源文件: {report['source_file']}\n")
+            f.write(f"总样本数: {report['total_samples']}\n")
+            f.write(f"聚类数: {report['n_clusters']}\n")
+            f.write(f"使用的特征: {', '.join(report['used_columns'])}\n\n")
+            
+            f.write("各聚类统计:\n")
+            f.write("-" * 60 + "\n")
+            for cluster_id in sorted(report['cluster_info'].keys(), key=int):
+                info = report['cluster_info'][cluster_id]
+                f.write(f"\n聚类 {cluster_id}:\n")
+                f.write(f"  样本数: {info['count']}\n")
+                if info['mean']:
+                    f.write(f"  平均值:\n")
+                    for col, val in info['mean'].items():
+                        f.write(f"    {col}: {val:.2f}\n")
+            
+            f.write(f"\n聚类质量指标:\n")
+            f.write("-" * 60 + "\n")
+            if report['quality_metrics']['silhouette_score']:
+                f.write(f"  轮廓系数: {report['quality_metrics']['silhouette_score']:.4f} (范围: -1到1，越大越好)\n")
+            f.write(f"  簇内平方和: {report['quality_metrics']['inertia']:.2f} (越小越好)\n")
+        
+        saved_files['txt'] = txt_output_file
+        
+        return saved_files
+        
+    except Exception as e:
+        raise Exception(f"保存结果时出错: {str(e)}")

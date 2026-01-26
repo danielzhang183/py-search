@@ -207,6 +207,16 @@ def _run_analysis(csv_file: str, n_clusters: int, columns: list, directory: str,
             display_cols.insert(0, '客户ID')
         print(df_with_cluster[display_cols].head(10).to_string(index=False))
         
+        # 保存结果到reports文件夹
+        from .data_analyzer import save_analysis_results
+        try:
+            saved_files = save_analysis_results(result, csv_file, n_clusters)
+            print(f"\n✓ 聚类结果已保存: {saved_files['csv']}")
+            print(f"✓ 分析报告已保存: {saved_files['json']}")
+            print(f"✓ 文本报告已保存: {saved_files['txt']}")
+        except Exception as e:
+            print(f"\n⚠ 保存结果时出错: {e}", file=sys.stderr)
+        
         print("\n✓ 分析完成！")
         
     except ImportError as e:

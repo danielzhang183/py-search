@@ -30,6 +30,10 @@ py-search/
 │   └── test_csv_handler.py # 单元测试
 ├── examples/               # 示例数据目录（仅存放CSV数据文件）
 │   └── example.csv         # 示例CSV文件
+├── reports/                 # 分析报告目录（自动生成）
+│   ├── *_clustered_*.csv   # 带聚类标签的CSV文件
+│   ├── *_report_*.json     # 分析报告（JSON格式）
+│   └── *_report_*.txt      # 分析报告（文本格式）
 ├── scripts/                # 示例脚本目录
 │   ├── download_example.py # 下载功能使用示例
 │   ├── coze_integration_example.py # Coze API集成示例
@@ -109,6 +113,11 @@ py-search --analysis customer_data.csv --columns 消费金额 购买次数 --dir
 
 # 自动寻找最优聚类数
 py-search --analysis customer_data.csv --optimal --dir examples
+
+# 注意：分析结果会自动保存到 reports/ 文件夹
+# - *_clustered_*.csv: 包含聚类标签的完整数据
+# - *_report_*.json: 分析报告（JSON格式）
+# - *_report_*.txt: 分析报告（文本格式）
 ```
 
 ### Python代码中使用
@@ -238,6 +247,11 @@ MIT License
 ### K-means聚类分析
 
 项目支持对CSV数据进行K-means聚类分析，参考[阿里云开发者社区文章](https://developer.aliyun.com/article/1541894)。
+
+**分析结果会自动保存到 `reports/` 文件夹：**
+- `*_clustered_*.csv` - 包含原始数据和聚类标签的CSV文件
+- `*_report_*.json` - 分析报告（JSON格式，包含统计信息）
+- `*_report_*.txt` - 分析报告（文本格式，更易读）
 
 **快速开始：**
 
