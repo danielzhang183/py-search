@@ -55,7 +55,7 @@ pip install -r requirements.txt
 
 2. 使用Python模块方式运行：
 ```bash
-python -m py_search.cli
+python3 -m py_search.cli
 ```
 
 ## 使用方法
@@ -122,24 +122,40 @@ read_csv_simple("example.csv", directory="./examples")
 
 ### 运行测试
 
-```bash
-# 运行所有测试
-python -m pytest tests/
+项目使用 Python 标准库的 `unittest` 框架，无需安装额外依赖：
 
-# 运行测试并显示覆盖率
-pytest --cov=py_search tests/
+```bash
+# 运行所有测试（使用标准库 unittest）
+python3 -m unittest discover tests
+
+# 或者直接运行测试文件
+python3 -m unittest tests.test_csv_reader
+
+# 或者使用 pytest（需要先安装：pip install pytest）
+python3 -m pytest tests/
+
+# 使用 pytest 并显示覆盖率（需要安装：pip install pytest pytest-cov）
+python3 -m pytest --cov=py_search tests/
 ```
 
-### 开发模式安装
+### 安装开发依赖
+
+如果需要使用 pytest 进行测试：
 
 ```bash
-pip install -e ".[dev]"
+# 安装开发依赖（包括 pytest）
+pip3 install -r requirements-dev.txt
+
+# 或者使用 setup.py 安装
+pip3 install -e ".[dev]"
 ```
 
 ## 系统要求
 
-- Python 3.6+
+- Python 3.6+（在 macOS 上使用 `python3` 命令）
 - （可选）pandas >= 2.0.0（用于完整功能）
+
+**注意**：在 macOS 和大多数 Linux 系统上，Python 3 的命令是 `python3` 而不是 `python`。如果遇到 `command not found: python` 错误，请使用 `python3` 替代。
 
 ## 注意事项
 
