@@ -374,8 +374,9 @@ emails = extract_emails("联系邮箱：contact@example.com")
 
 **学习资源：**
 
-- 完整指南: [docs/WEB_SCRAPING_GUIDE.md](docs/WEB_SCRAPING_GUIDE.md)
-- 示例代码: [scripts/web_scraping_example.py](scripts/web_scraping_example.py)
+- 📚 **完整指南**: [docs/WEB_SCRAPING_GUIDE.md](docs/WEB_SCRAPING_GUIDE.md) - 爬虫库和函数详解
+- 🗺️ **实战路线图**: [docs/WEB_SCRAPING_ROADMAP.md](docs/WEB_SCRAPING_ROADMAP.md) - 从零开始爬取真实网页的完整流程
+- 💻 **示例代码**: [scripts/web_scraping_example.py](scripts/web_scraping_example.py)
 
 **安装依赖：**
 
