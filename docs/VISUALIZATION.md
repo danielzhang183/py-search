@@ -196,6 +196,7 @@ silhouette_path = visualizer.plot_silhouette_scores(
 ## 图表保存位置
 
 所有可视化图表默认保存在 `reports/` 文件夹下，文件名格式：
+
 - `{原文件名}_2d_{时间戳}.png` - 2D散点图
 - `{原文件名}_3d_{时间戳}.png` - 3D散点图
 - `{原文件名}_distribution_{时间戳}.png` - 分布图
@@ -205,19 +206,23 @@ silhouette_path = visualizer.plot_silhouette_scores(
 ## 图表解读
 
 ### 2D/3D散点图
+
 - **不同颜色**：代表不同的聚类
 - **红色X**：表示聚类中心
 - **点之间的距离**：距离越近，特征越相似
 
 ### 聚类分布图
+
 - **柱状高度**：表示每个聚类的样本数量
 - **平衡性**：各聚类样本数越接近，分布越均匀
 
 ### 肘部法则图
+
 - **下降趋势**：k值增加，簇内平方和减小
 - **肘部点**：下降趋势明显变缓的点，通常是最优k值
 
 ### 轮廓系数图
+
 - **数值范围**：-1 到 1
 - **越大越好**：接近1表示聚类效果很好
 - **最优k值**：轮廓系数最高的k值
@@ -233,6 +238,7 @@ silhouette_path = visualizer.plot_silhouette_scores(
 ## 示例代码
 
 查看完整示例：
+
 - [scripts/visualization_example.py](../scripts/visualization_example.py)
 
 ## 故障排除
@@ -242,6 +248,7 @@ silhouette_path = visualizer.plot_silhouette_scores(
 **错误信息：** `ModuleNotFoundError: No module named 'matplotlib'`
 
 **解决方案：**
+
 ```bash
 pip install matplotlib
 ```
@@ -283,6 +290,7 @@ plt.rcParams['axes.unicode_minus'] = False
 ```
 
 **macOS字体路径：**
+
 - Arial Unicode MS: `/System/Library/Fonts/Supplemental/Arial Unicode.ttf`
 - PingFang SC: `/System/Library/Fonts/PingFang.ttc`
 - Heiti SC: `/System/Library/Fonts/STHeiti Medium.ttc`

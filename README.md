@@ -253,6 +253,7 @@ MIT License
 项目支持对CSV数据进行K-means聚类分析，参考[阿里云开发者社区文章](https://developer.aliyun.com/article/1541894)。
 
 **分析结果会自动保存到 `reports/` 文件夹：**
+
 - `*_clustered_*.csv` - 包含原始数据和聚类标签的CSV文件
 - `*_report_*.json` - 分析报告（JSON格式，包含统计信息）
 - `*_report_*.txt` - 分析报告（文本格式，更易读）
