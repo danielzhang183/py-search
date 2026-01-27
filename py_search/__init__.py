@@ -1,63 +1,34 @@
 """
-py_search - Python CSV文件读取工具
+py_search - K-means聚类分析工具
 
-一个简单易用的Python工具，用于读取和处理CSV文件。
+一个简单易用的Python工具，用于对CSV数据进行K-means聚类分析。
 """
 
 __version__ = "0.1.0"
 __author__ = "Dylan Zhang"
 
-from .csv_handler import CSVReader, read_csv_files, read_csv_simple, download_csv_from_url
+# 导入CSV读取工具（K-means分析需要）
+from .csv_handler import CSVReader
 
-# 可选导入Coze集成模块
+# 导入数据分析模块
 try:
-    from .coze_integration import CozeClient, create_coze_client_from_env
-    _has_coze = True
-except ImportError:
-    _has_coze = False
-
-# 可选导入数据分析模块
-try:
-    from .data_analyzer import DataAnalyzer, kmeans_analyze_csv
+    from .data_analyzer import DataAnalyzer, kmeans_analyze_csv, save_analysis_results
     _has_analyzer = True
 except ImportError:
     _has_analyzer = False
-
-# 构建导出列表
-__all__ = [
-    "CSVReader", 
-    "read_csv_files", 
-    "read_csv_simple", 
-    "download_csv_from_url"
-]
-
-if _has_coze:
-    __all__.extend(["CozeClient", "create_coze_client_from_env"])
-
-if _has_analyzer:
-    __all__.extend(["DataAnalyzer", "kmeans_analyze_csv", "save_analysis_results"])
 
 # 可选导入可视化模块
 try:
     from .visualizer import ClusterVisualizer, visualize_cluster_result
     _has_visualizer = True
-    if _has_analyzer:
-        __all__.extend(["ClusterVisualizer", "visualize_cluster_result"])
 except ImportError:
     _has_visualizer = False
 
-# 可选导入爬虫模块
-try:
-    from .web_scraper import WebScraper, scrape_and_save
-    _has_scraper = True
-    __all__.extend(["WebScraper", "scrape_and_save"])
-except (ImportError, AttributeError) as e:
-    _has_scraper = False
+# 构建导出列表
+__all__ = ["CSVReader"]
 
-# 可选导入工具函数模块
-try:
-    from .utils import clean_text, extract_emails, extract_numbers, save_to_csv, save_to_json
-    _has_utils = True
-    __all__.extend(["clean_text", "extract_emails", "extract_numbers", "save_to_csv", "save_to_json"])
-except ImportError:
-    _has_utils = False
+if _has_analyzer:
+    __all__.extend(["DataAnalyzer", "kmeans_analyze_csv", "save_analysis_results"])
+
+if _has_visualizer and _has_analyzer:
+    __all__.extend(["ClusterVisualizer", "visualize_cluster_result"])

@@ -25,7 +25,7 @@ setup(
     version="0.1.0",
     author="Daniel Zhang",
     author_email="danielzhang182@gmail.com",
-    description="一个简单易用的Python工具，用于读取和处理CSV文件",
+    description="一个简单易用的Python工具，用于对CSV数据进行K-means聚类分析",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/danielzhang182/py-search",
