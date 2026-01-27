@@ -45,3 +45,19 @@ try:
         __all__.extend(["ClusterVisualizer", "visualize_cluster_result"])
 except ImportError:
     _has_visualizer = False
+
+# 可选导入爬虫模块
+try:
+    from .web_scraper import WebScraper, scrape_and_save
+    _has_scraper = True
+    __all__.extend(["WebScraper", "scrape_and_save"])
+except (ImportError, AttributeError) as e:
+    _has_scraper = False
+
+# 可选导入工具函数模块
+try:
+    from .utils import clean_text, extract_emails, extract_numbers, save_to_csv, save_to_json
+    _has_utils = True
+    __all__.extend(["clean_text", "extract_emails", "extract_numbers", "save_to_csv", "save_to_json"])
+except ImportError:
+    _has_utils = False

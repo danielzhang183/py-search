@@ -12,6 +12,7 @@
 - 🤖 集成Coze AI平台，支持AI分析
 - 📈 **K-means聚类分析**（参考[阿里云文章](https://developer.aliyun.com/article/1541894)）
 - 📊 **可视化展示**：自动生成2D/3D散点图、分布图、肘部法则图等
+- 🕷️ **Web爬虫功能**：提供通用爬虫工具和示例
 - 🛡️ 包含完善的错误处理机制
 - 📦 标准化的Python项目结构
 - 🧪 包含单元测试
@@ -24,8 +25,14 @@ py-search/
 │   ├── __init__.py         # 包初始化文件
 │   ├── csv_handler.py      # CSV处理核心模块（读取、下载）
 │   ├── data_analyzer.py    # 数据分析模块（K-means聚类）
+│   ├── web_scraper.py      # Web爬虫模块
+│   ├── visualizer.py       # 可视化模块
 │   ├── coze_integration.py # Coze AI集成模块
-│   └── cli.py              # 命令行接口
+│   ├── cli.py              # 命令行接口
+│   └── utils/               # 工具函数模块
+│       ├── __init__.py
+│       ├── text.py          # 文本处理工具
+│       └── file.py          # 文件操作工具
 ├── tests/                  # 测试目录
 │   ├── __init__.py
 │   └── test_csv_handler.py # 单元测试
@@ -200,6 +207,12 @@ python3 -m unittest discover tests
 # 或者直接运行测试文件
 python3 -m unittest tests.test_csv_handler
 
+# 运行utils模块测试
+python3 -m unittest tests.test_utils_text tests.test_utils_file
+
+# 运行所有测试
+python3 -m unittest discover tests
+
 # 或者使用 pytest（需要先安装：pip install pytest）
 python3 -m pytest tests/
 
@@ -229,6 +242,7 @@ pip3 install -e ".[dev]"
   - matplotlib >= 3.5.0（用于可视化，可选但推荐）
 - **可选依赖：**
   - cozepy（用于Coze AI集成）
+  - requests, beautifulsoup4, lxml, fake-useragent（用于Web爬虫）
 
 **注意**：在 macOS 和大多数 Linux 系统上，Python 3 的命令是 `python3` 而不是 `python`。如果遇到 `command not found: python` 错误，请使用 `python3` 替代。
 
@@ -313,6 +327,61 @@ pip install pandas scikit-learn numpy
 **示例代码：**
 
 - 查看 [scripts/kmeans_analysis_example.py](scripts/kmeans_analysis_example.py) 获取完整示例
+
+### Web爬虫功能
+
+项目提供了通用的Web爬虫工具，适合有Web开发经验的开发者快速入门。
+
+**快速开始：**
+
+```python
+from py_search.web_scraper import WebScraper
+
+# 创建爬虫实例
+scraper = WebScraper()
+
+# 发送GET请求
+response = scraper.get("https://example.com")
+if response:
+    # 解析HTML
+    soup = scraper.parse_html(response.text)
+    
+    # 提取链接
+    links = scraper.extract_links(soup, base_url="https://example.com")
+    
+    # 使用CSS选择器提取内容
+    titles = scraper.extract_by_selector(soup, 'h1.title')
+```
+
+**便捷函数：**
+
+```python
+from py_search.web_scraper import scrape_and_save, clean_text, extract_emails
+
+# 爬取并保存到CSV
+scrape_and_save(
+    url="https://example.com",
+    output_file="data.csv",
+    selectors={'title': 'h1', 'content': '.content'}
+)
+
+# 数据清洗
+clean_text("  价格：$99.99  \n\n")
+
+# 提取邮箱
+emails = extract_emails("联系邮箱：contact@example.com")
+```
+
+**学习资源：**
+
+- 完整指南: [docs/WEB_SCRAPING_GUIDE.md](docs/WEB_SCRAPING_GUIDE.md)
+- 示例代码: [scripts/web_scraping_example.py](scripts/web_scraping_example.py)
+
+**安装依赖：**
+
+```bash
+pip install requests beautifulsoup4 lxml fake-useragent
+```
 
 ### Coze API 集成
 
