@@ -272,7 +272,7 @@ def download_csv_from_url(url: str, save_directory: Optional[str] = None, filena
     if save_directory is None:
         # 获取项目根目录（假设examples在项目根目录下）
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        save_directory = os.path.join(current_dir, "examples")
+        save_directory = os.path.join(current_dir, "data")
     
     reader = CSVReader(directory=save_directory)
     return reader.download_csv(url, filename)

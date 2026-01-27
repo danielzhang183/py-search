@@ -84,13 +84,13 @@ path = visualizer.plot_silhouette_scores(
 
 ```bash
 # 基本分析（自动生成可视化）
-python3 -m py_search.cli --analysis customer_data.csv --dir examples --clusters 4
+python3 -m py_search.cli --analysis customer_data.csv --dir data --clusters 4
 
 # 不生成可视化图表
-python3 -m py_search.cli --analysis customer_data.csv --dir examples --clusters 4 --no-viz
+python3 -m py_search.cli --analysis customer_data.csv --dir data --clusters 4 --no-viz
 
 # 寻找最优聚类数（会生成肘部法则图和轮廓系数图）
-python3 -m py_search.cli --analysis customer_data.csv --dir examples --optimal
+python3 -m py_search.cli --analysis customer_data.csv --dir data --optimal
 ```
 
 ### 方式2: Python代码中使用
@@ -105,7 +105,7 @@ from py_search.visualizer import visualize_cluster_result
 result = kmeans_analyze_csv(
     csv_file="customer_data.csv",
     n_clusters=4,
-    directory="./examples"
+    directory="./data"
 )
 
 # 生成所有可视化图表
@@ -124,7 +124,7 @@ from py_search import CSVReader
 from py_search.data_analyzer import DataAnalyzer, kmeans_analyze_csv
 
 # 执行分析
-result = kmeans_analyze_csv("customer_data.csv", n_clusters=4, directory="./examples")
+result = kmeans_analyze_csv("customer_data.csv", n_clusters=4, directory="./data")
 
 # 创建可视化器
 visualizer = ClusterVisualizer()
@@ -163,7 +163,7 @@ from py_search.visualizer import ClusterVisualizer
 from py_search import CSVReader
 
 # 读取数据
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 df = reader.read_with_pandas("customer_data.csv")
 
 # 数据预处理

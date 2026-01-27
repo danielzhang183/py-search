@@ -29,7 +29,7 @@ py-search/
 ├── tests/                  # 测试目录
 │   ├── __init__.py
 │   └── test_csv_handler.py # 单元测试
-├── examples/               # 示例数据目录（仅存放CSV数据文件）
+├── data/               # 示例数据目录（仅存放CSV数据文件）
 │   └── example.csv         # 示例CSV文件
 ├── reports/                 # 分析报告目录（自动生成）
 │   ├── *_clustered_*.csv   # 带聚类标签的CSV文件
@@ -98,22 +98,22 @@ py-search --file example.csv
 py-search --dir /path/to/directory
 
 # 从HTTPS URL下载CSV文件到examples文件夹
-py-search --download https://example.com/data.csv
+py-search --download https://example.com/example.csv
 
 # 下载并指定文件名
-py-search --download https://example.com/data.csv --filename mydata.csv
+py-search --download https://example.com/example.csv --filename mydata.csv
 
 # 对CSV文件进行K-means聚类分析
-py-search --analysis customer_data.csv --dir examples
+py-search --analysis customer_data.csv --dir data
 
 # 指定聚类数为4
-py-search --analysis customer_data.csv --clusters 4 --dir examples
+py-search --analysis customer_data.csv --clusters 4 --dir data
 
 # 指定使用的列
-py-search --analysis customer_data.csv --columns 消费金额 购买次数 --dir examples
+py-search --analysis customer_data.csv --columns 消费金额 购买次数 --dir data
 
 # 自动寻找最优聚类数
-py-search --analysis customer_data.csv --optimal --dir examples
+py-search --analysis customer_data.csv --optimal --dir data
 
 # 注意：分析结果会自动保存到 reports/ 文件夹
 # - *_clustered_*.csv: 包含聚类标签的完整数据
@@ -131,7 +131,7 @@ py-search --analysis customer_data.csv --optimal --dir examples
 from py_search import CSVReader
 
 # 创建读取器实例
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 
 # 查找所有CSV文件
 csv_files = reader.find_csv_files()
@@ -157,19 +157,19 @@ print(f"行数: {info['rows']}, 列数: {info['columns']}")
 from py_search import read_csv_files, read_csv_simple, download_csv_from_url
 
 # 读取目录下所有CSV文件
-read_csv_files(directory="./examples", use_pandas=True)
+read_csv_files(directory="./data", use_pandas=True)
 
 # 读取指定文件（使用标准库）
-read_csv_simple("example.csv", directory="./examples")
+read_csv_simple("example.csv", directory="./data")
 
 # 从URL下载CSV文件到examples文件夹
-save_path = download_csv_from_url("https://example.com/data.csv")
+save_path = download_csv_from_url("https://example.com/example.csv")
 print(f"文件已保存到: {save_path}")
 
 # 下载并指定文件名和目录
 save_path = download_csv_from_url(
-    "https://example.com/data.csv",
-    save_directory="./examples",
+    "https://example.com/example.csv",
+    save_directory="./data",
     filename="mydata.csv"
 )
 ```
@@ -180,10 +180,10 @@ save_path = download_csv_from_url(
 from py_search import CSVReader
 
 # 创建读取器实例，指定保存目录
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 
 # 下载CSV文件
-save_path = reader.download_csv("https://example.com/data.csv", filename="data.csv")
+save_path = reader.download_csv("https://example.com/example.csv", filename="data.csv")
 print(f"文件已保存到: {save_path}")
 ```
 
@@ -239,7 +239,7 @@ pip3 install -e ".[dev]"
 - 如果CSV文件读取失败，会显示错误信息但不会中断程序
 - 使用pandas功能需要先安装pandas：`pip install pandas`
 - 下载功能使用Python标准库，无需额外依赖
-- 下载的文件默认保存到 `examples/` 文件夹
+- 下载的文件默认保存到 `data/` 文件夹
 - 如果URL中没有文件名，会自动生成一个基于域名的文件名
 
 ## 许可证
@@ -267,7 +267,7 @@ from py_search.data_analyzer import DataAnalyzer, kmeans_analyze_csv
 result = kmeans_analyze_csv(
     csv_file="example.csv",
     n_clusters=3,  # 分为3个聚类
-    directory="./examples"
+    directory="./data"
 )
 
 # 查看结果
@@ -275,7 +275,7 @@ print(f"聚类数: {result['n_clusters']}")
 print(f"各聚类样本数: {result['cluster_info']}")
 
 # 方式2: 使用类方法
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 df = reader.read_with_pandas("example.csv")
 
 analyzer = DataAnalyzer()
@@ -295,7 +295,7 @@ result = kmeans_analyze_csv(
     csv_file="customer_data.csv",
     n_clusters=4,  # 将客户分为4类
     numeric_columns=["消费金额", "购买次数", "最近购买天数"],
-    directory="./examples"
+    directory="./data"
 )
 
 # 查看每个客户所属的聚类
@@ -330,7 +330,7 @@ client = create_coze_client_from_env()
 client = CozeClient(access_token="your_pat_token")
 
 # 分析CSV文件
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 info = reader.get_file_info("example.csv")
 
 # 使用Coze Bot分析

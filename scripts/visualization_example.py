@@ -28,7 +28,7 @@ def example_basic_visualization():
         result = kmeans_analyze_csv(
             csv_file="customer_data.csv",
             n_clusters=4,
-            directory="./examples"
+            directory="./data"
         )
         
         # 生成可视化图表
@@ -53,14 +53,14 @@ def example_custom_visualization():
     
     try:
         # 读取数据
-        reader = CSVReader(directory="./examples")
+        reader = CSVReader(directory="./data")
         df = reader.read_with_pandas("customer_data.csv")
         
         # 执行分析
         result = kmeans_analyze_csv(
             csv_file="customer_data.csv",
             n_clusters=4,
-            directory="./examples"
+            directory="./data"
         )
         
         # 创建可视化器
@@ -107,7 +107,7 @@ def example_optimal_clusters_visualization():
         from py_search.data_analyzer import DataAnalyzer
         
         # 读取数据
-        reader = CSVReader(directory="./examples")
+        reader = CSVReader(directory="./data")
         df = reader.read_with_pandas("customer_data.csv")
         
         # 数据预处理

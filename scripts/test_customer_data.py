@@ -20,7 +20,7 @@ try:
     print("=" * 60)
     
     # 读取文件
-    reader = CSVReader(directory="./examples")
+    reader = CSVReader(directory="./data")
     
     try:
         df = reader.read_with_pandas("customer_data.csv")
@@ -47,11 +47,11 @@ try:
         print(f"  result = kmeans_analyze_csv(")
         print(f"      csv_file='customer_data.csv',")
         print(f"      n_clusters=4,")
-        print(f"      directory='./examples'")
+        print(f"      directory='./data'")
         print(f"  )")
         
     except FileNotFoundError:
-        print(f"✗ 文件不存在: examples/customer_data.csv")
+        print(f"✗ 文件不存在: data/customer_data.csv")
     except Exception as e:
         print(f"✗ 读取文件时出错: {e}")
         print(f"\n提示: 确保已安装pandas: pip install pandas")

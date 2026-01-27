@@ -145,7 +145,7 @@ client = create_coze_client_from_env()
 client = CozeClient(access_token="your_pat_token")
 
 # 读取CSV文件信息
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 info = reader.get_file_info("example.csv")
 
 # 使用Coze Bot分析
@@ -165,7 +165,7 @@ print(result)
 result = client.upload_csv_for_analysis(
     bot_id="your_bot_id",
     user_id="user_123",
-    csv_file_path="./examples/example.csv",
+    csv_file_path="./data/example.csv",
     question="请分析这个CSV文件的数据结构"
 )
 ```

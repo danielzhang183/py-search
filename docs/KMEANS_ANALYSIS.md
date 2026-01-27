@@ -29,7 +29,7 @@ from py_search.data_analyzer import kmeans_analyze_csv
 result = kmeans_analyze_csv(
     csv_file="example.csv",
     n_clusters=3,  # 分为3个聚类
-    directory="./examples"
+    directory="./data"
 )
 
 # 查看结果
@@ -51,7 +51,7 @@ from py_search import CSVReader
 from py_search.data_analyzer import DataAnalyzer
 
 # 读取CSV文件
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 df = reader.read_with_pandas("example.csv")
 
 # 创建分析器
@@ -77,7 +77,7 @@ print(f"轮廓系数: {result['silhouette_score']}")
 from py_search import CSVReader
 from py_search.data_analyzer import DataAnalyzer
 
-reader = CSVReader(directory="./examples")
+reader = CSVReader(directory="./data")
 df = reader.read_with_pandas("example.csv")
 
 analyzer = DataAnalyzer()
@@ -110,7 +110,7 @@ result = kmeans_analyze_csv(
     csv_file="customer_data.csv",
     n_clusters=4,  # 将客户分为4类
     numeric_columns=["消费金额", "购买次数", "最近购买天数"],
-    directory="./examples"
+    directory="./data"
 )
 
 # 查看每个客户所属的聚类

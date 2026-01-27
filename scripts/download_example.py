@@ -28,8 +28,8 @@ print("示例2: 使用CSVReader类的download_csv方法")
 print("-" * 50)
 
 try:
-    reader = CSVReader(directory="../examples")
-    url = "https://example.com/data.csv"  # 替换为实际的CSV URL
+    reader = CSVReader(directory="../data")
+    url = "https://example.com/example.csv"  # 替换为实际的CSV URL
     save_path = reader.download_csv(url, filename="downloaded_data.csv")
     print(f"✓ 文件已下载到: {save_path}")
 except Exception as e:

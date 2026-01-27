@@ -25,7 +25,7 @@ def example_basic_clustering():
     
     try:
         # 读取CSV文件
-        reader = CSVReader(directory="./examples")
+        reader = CSVReader(directory="./data")
         df = reader.read_with_pandas("example.csv")
         
         print(f"\n原始数据:")
@@ -70,7 +70,7 @@ def example_find_optimal_clusters():
     print("=" * 60)
     
     try:
-        reader = CSVReader(directory="./examples")
+        reader = CSVReader(directory="./data")
         df = reader.read_with_pandas("example.csv")
         
         analyzer = DataAnalyzer()
@@ -100,7 +100,7 @@ def example_analyze_csv_file():
         result = kmeans_analyze_csv(
             csv_file="example.csv",
             n_clusters=3,
-            directory="./examples"
+            directory="./data"
         )
         
         print(f"\n分析结果:")
@@ -152,7 +152,7 @@ def example_customer_segmentation():
         csv_file="customer_data.csv",
         n_clusters=4,  # 将客户分为4类
         numeric_columns=["消费金额", "购买次数", "最近购买天数"],
-        directory="./examples"
+        directory="./data"
     )
     
     # 查看每个客户所属的聚类
