@@ -221,7 +221,7 @@ for cluster_id, info in result['cluster_info'].items():
 ## 示例代码
 
 查看完整示例：
-- [scripts/kmeans_analysis_example.py](../scripts/kmeans_analysis_example.py)
+- [examples/kmeans_analysis_example.py](../examples/kmeans_analysis_example.py)
 
 ## 参考资源
 

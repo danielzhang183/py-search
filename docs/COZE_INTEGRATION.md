@@ -126,7 +126,7 @@ print(f"Bot描述: {bot.description}")
 
 ## 完整示例
 
-查看 `scripts/coze_integration_example.py` 获取完整示例代码。
+查看 `examples/coze_integration_example.py` 获取完整示例代码。
 
 ## 在 py-search 项目中使用
 

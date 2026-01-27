@@ -42,7 +42,7 @@ py-search/
 │   ├── *_clustered_*.csv   # 带聚类标签的CSV文件
 │   ├── *_report_*.json     # 分析报告（JSON格式）
 │   └── *_report_*.txt      # 分析报告（文本格式）
-├── scripts/                # 示例脚本目录
+├── examples/                # 示例脚本目录
 │   ├── download_example.py # 下载功能使用示例
 │   ├── coze_integration_example.py # Coze API集成示例
 │   └── kmeans_analysis_example.py # K-means聚类分析示例
@@ -128,70 +128,6 @@ py-search --analysis customer_data.csv --optimal --dir data
 # - *_report_*.txt: 分析报告（文本格式）
 # - *_2d_*.png, *_3d_*.png: 可视化图表（如果安装了matplotlib）
 # - --no-viz: 不生成可视化图表
-```
-
-### Python代码中使用
-
-#### 方式1：使用类
-
-```python
-from py_search import CSVReader
-
-# 创建读取器实例
-reader = CSVReader(directory="./data")
-
-# 查找所有CSV文件
-csv_files = reader.find_csv_files()
-print(f"找到 {len(csv_files)} 个CSV文件")
-
-# 使用标准库读取
-rows = reader.read_with_standard_lib("example.csv")
-for row in rows:
-    print(row)
-
-# 使用pandas读取（需要安装pandas）
-df = reader.read_with_pandas("example.csv")
-print(df.head())
-
-# 获取文件信息
-info = reader.get_file_info("example.csv")
-print(f"行数: {info['rows']}, 列数: {info['columns']}")
-```
-
-#### 方式2：使用函数
-
-```python
-from py_search import read_csv_files, read_csv_simple, download_csv_from_url
-
-# 读取目录下所有CSV文件
-read_csv_files(directory="./data", use_pandas=True)
-
-# 读取指定文件（使用标准库）
-read_csv_simple("example.csv", directory="./data")
-
-# 从URL下载CSV文件到examples文件夹
-save_path = download_csv_from_url("https://example.com/example.csv")
-print(f"文件已保存到: {save_path}")
-
-# 下载并指定文件名和目录
-save_path = download_csv_from_url(
-    "https://example.com/example.csv",
-    save_directory="./data",
-    filename="mydata.csv"
-)
-```
-
-#### 方式3：使用类的下载方法
-
-```python
-from py_search import CSVReader
-
-# 创建读取器实例，指定保存目录
-reader = CSVReader(directory="./data")
-
-# 下载CSV文件
-save_path = reader.download_csv("https://example.com/example.csv", filename="data.csv")
-print(f"文件已保存到: {save_path}")
 ```
 
 ## 开发
@@ -326,7 +262,7 @@ pip install pandas scikit-learn numpy
 
 **示例代码：**
 
-- 查看 [scripts/kmeans_analysis_example.py](scripts/kmeans_analysis_example.py) 获取完整示例
+- 查看 [examples/kmeans_analysis_example.py](examples/kmeans_analysis_example.py) 获取完整示例
 
 ### Web爬虫功能
 
@@ -379,7 +315,7 @@ emails = extract_emails("联系邮箱：contact@example.com")
 - 🕷️ **Scrapy 学习指南**: [docs/SCRAPY_LEARNING_GUIDE.md](docs/SCRAPY_LEARNING_GUIDE.md) - Scrapy框架深入学习（大规模爬虫）
 - 🎭 **Playwright 学习指南**: [docs/PLAYWRIGHT_LEARNING_GUIDE.md](docs/PLAYWRIGHT_LEARNING_GUIDE.md) - Playwright在爬虫中的实际应用
 - 🧹 **数据清洗高级技巧**: [docs/DATA_CLEANING_ADVANCED.md](docs/DATA_CLEANING_ADVANCED.md) - 数据清洗的高级技巧和最佳实践
-- 💻 **示例代码**: [scripts/web_scraping_example.py](scripts/web_scraping_example.py)
+- 💻 **示例代码**: [examples/web_scraping_example.py](examples/web_scraping_example.py)
 
 **安装依赖：**
 
@@ -427,7 +363,7 @@ export COZE_BOT_ID="your_bot_id"
 **详细文档：**
 
 - 集成指南: [docs/COZE_INTEGRATION.md](docs/COZE_INTEGRATION.md)
-- 示例代码: [scripts/coze_integration_example.py](scripts/coze_integration_example.py)
+- 示例代码: [examples/coze_integration_example.py](examples/coze_integration_example.py)
 
 **安装依赖：**
 
@@ -442,12 +378,3 @@ pip3 install cozepy
 ## 贡献
 
 欢迎提交Issue和Pull Request！
-
-## 更新日志
-
-### v0.1.0
-
-- 初始版本
-- 支持标准库和pandas两种读取方式
-- 提供命令行接口
-- 包含单元测试

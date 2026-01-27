@@ -239,7 +239,7 @@ silhouette_path = visualizer.plot_silhouette_scores(
 
 查看完整示例：
 
-- [scripts/visualization_example.py](../scripts/visualization_example.py)
+- [examples/visualization_example.py](../examples/visualization_example.py)
 
 ## 故障排除
 
